@@ -84,6 +84,60 @@ for (index, item) in shoppingList.enumerate() {
 // 通过构造器语法创建一个特定类型的空集合
 var letters = Set<Character>()
 letters.count
+// 上下文提供了类型信息，比如作为函数的参数或者已知类型的变量或者常量，我们可以通过一个空的数组字面量创建一个空的Set:
+letters.insert("a")
+letters = []
+// letters现在是一个空的Set,但是它依然是Set<Character>
+
+// 用数组字面量创建集合
+//var favoriteGenres: Set<String> = ["Rock", "Classical", "Hip hop"]
+// 简化
+var favoriteGenres: Set = ["Rock", "Classical", "Hip hop"]
+// 由于数组字面量中的所有元素类型相同，Swift可以推断出Set<String>为正确类型
+
+// 访问和修改一个集合
+// Set中的数量
+favoriteGenres.count
+// 检查Count是否为0
+favoriteGenres.isEmpty
+// 添加一个新元素
+favoriteGenres.insert("Jazz")
+// 删除一个元素
+favoriteGenres.remove("Rock") // 如果该值是Set的一个元素则删除并返回被删除的元素值，否则返回nil
+// 删除所有元素
+//favoriteGenres.removeAll(）
+// 判断Set是否包含一个特定的值
+favoriteGenres.contains("Fuck")
+
+// 遍历一个集合
+for genre in favoriteGenres {
+    print(genre)
+}
+
+// 集合没有确定的顺序，我了按照特定顺序来遍历一个Set
+for genre in favoriteGenres.sort() {
+    print(genre)
+}
+
+// 集合的操作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
