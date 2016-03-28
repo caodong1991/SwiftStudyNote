@@ -120,8 +120,30 @@ for genre in favoriteGenres.sort() {
 }
 
 // 集合的操作
+// 使用intersect(_:)方法根据两个集合中都包含的值创建一个新的集合。
+// 使用exclusiveOr(_:)方法根据一个集合中但不在两个集合中的值创建一个新的集合。
+// 使用union(_:)方法根据两个集合的值创建一个新的集合。
+// 使用subtract(_:)方法根据不在该集合中的值创建一个新的集合。
+let oddDigits: Set = [1, 3, 5, 7, 9]
+let evenDigits: Set = [0, 2, 4, 6, 8]
+let singleDigitprimeNumbers: Set = [2, 3, 5, 7]
+oddDigits.union(evenDigits).sort()
+oddDigits.intersect(evenDigits).sort()
+oddDigits.subtract(singleDigitprimeNumbers).sort()
+oddDigits.exclusiveOr(singleDigitprimeNumbers).sort()
 
-
+// 集合成员关系和相等
+// 使用“是否相等”运算符（==）来判断两个集合是否包含全部相同的值。
+// 使用isSubsetOf(_:)方法来判断一个集合中的值是否也被包含在另外一个集合中。
+// 使用isSupersetOf(_:)方法来判断一个集合中包含另一个集合中所有的值。
+// 使用isStrictSubsetOf(_:)或者isStrictSupersetOff(_:)方法来判断一个集合是否是另外一个集合的子集合或者父集合并且两个集合并不相等。
+// 使用isDisjoinWith(_:)方法来判断两个集合是否不含有相同的值。
+let houseAnimals: Set = ["🐶", "🐱"]
+let frameAnimals: Set = ["🐮", "🐔", "🐑", "🐶", "🐱"]
+let cityAnimals:Set = ["🐦", "🐭"]
+houseAnimals.isSubsetOf(frameAnimals)
+frameAnimals.isSupersetOf(houseAnimals)
+frameAnimals.isDisjointWith(cityAnimals)
 
 
 
