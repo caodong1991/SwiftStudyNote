@@ -145,8 +145,22 @@ houseAnimals.isSubsetOf(frameAnimals)
 frameAnimals.isSupersetOf(houseAnimals)
 frameAnimals.isDisjointWith(cityAnimals)
 
+// 字典
+// 字典类型的快捷语法
+// swift的字典使用Dictionary<key, value>定义。一个字典的key必须遵守Hashable协议
 
+// 创建一个空字典
+var namesOfIntegers = [Int: String]()
+// 如果上下文已经提供了类型信息，我们可以使用空字典字面量来创建一个空字典，记作[:]
+namesOfIntegers[16] = "sixteen"
+print(namesOfIntegers)
+namesOfIntegers = [:]
+print(namesOfIntegers)
 
+// 用字典字面量来创建字典
+var airpots:[String: String] = ["YYZ":"Toronto", "DUB":"Dublin"]
+
+// 
 
 
 
