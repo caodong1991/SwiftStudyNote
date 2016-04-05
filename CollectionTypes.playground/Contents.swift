@@ -158,15 +158,60 @@ namesOfIntegers = [:]
 print(namesOfIntegers)
 
 // 用字典字面量来创建字典
-var airpots:[String: String] = ["YYZ":"Toronto", "DUB":"Dublin"]
+//var airpots:[String: String] = ["YYZ":"Toronto", "DUB":"Dublin"]
 
-// 
+// 我们在用字典字面量构造字典时，如果它的键和值都有各自一致的类型，那么就不必写出字典的类型。airports字典也可以用这种简短方式定义：
+var airpots = ["YYZ":"Toronto", "DUB":"Dublin"]
 
+// 访问和修改字典
+// 字典的只读属性count来获取某个字典的数据项数量
+airpots.count
 
+// isEmpty来快捷地检查字典的count属性是否等于0
+airpots.isEmpty
 
+// 使用下标语法来添加新的数据项
+airpots["LHR"] = "London"
 
+// 也可以使用下标语法来改变特定键对应的值
+airpots["LHR"] = "London Healthrow"
 
+// updateValue(_:forKey)方法可以设置或者更新特定键对应的值，在这个键不存在对应值的时候会设置新值或者在存在时更新已存在的值。这个方法返回更新值之前的原值(可选值)。我们可以检查更新是否成功。
+if let oldValue = airpots.updateValue("Dublin Airport", forKey: "DUB") {
+    print("The old value for DUB was \(oldValue).")
+}
 
+// 使用下标语法来在字典中检索特定对应的值。字典的下标访问会返回对应值的类型的可选值。
+if let airportName = airpots["DUB"] {
+    print("The name of the airport is \(airportName).")
+} else {
+    print("That airport is not in the airports dictionary.")
+}
+
+// 通过下标语法来通过某个键的对应值赋值nil来从字典里删除一个键值对
+airpots["APL"] = "Apple Internation"
+print(airpots)
+airpots["APL"] = nil
+print(airpots)
+
+// removeValueForKey(_:)方法也可以用来在字典中移除键值对。
+if let removedValue = airpots.removeValueForKey("DUB") {
+    print("The Removed airport's name is \(removedValue)")
+} else {
+    print("The airports dictionary does not contain a value for DUB.")
+}
+
+// 字典遍历
+for (airportCode, airportName) in airpots {
+    print("\(airportCode):\(airportName)")
+}
+
+let airportCodes = [String](airpots.keys)
+
+let airportNames = [String](airpots.values)
+
+// 为了以特定的顺序遍历字典的键或值，可以对字典的keys或values属性使用sort()方法
+airpots.keys.sort()
 
 
 
