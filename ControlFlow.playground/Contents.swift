@@ -46,5 +46,13 @@ for (animalName, legCount) in numberOfLegs {
 // Repeat-While 在判断循环条件之前，先执行一次循环的代码块，然后重复循环直到条件为false。
 
 // 条件语句
-
-
+// if语句最简单的形式就是只包含一个条件，当且仅当该条件为true时，才执行相关代码
+var temperaturelnFahrenheit = 90
+if temperaturelnFahrenheit <= 32 {
+    print("It's very cold. Consider wearing a scarf.")
+} else if temperaturelnFahrenheit >= 86 {
+    print("It's really warm. Don't forget to wear sunscreen.")
+} else {
+    print("it's not that cold. Wear a t-shirt.")
+}
+// Switch语句最简单的形式就是把某个值与一个或若干个相同类型的值作比较，由多个cae构成。
