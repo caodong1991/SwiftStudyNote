@@ -129,8 +129,60 @@ case let (x, y):
     print("(\(x), \(y) is just some arbitrary point)")
 }
 
+// 控制转移语句
+// continue 语句告诉一个循环体立刻停止本次循环迭代，重新开始下次循环迭代。
+let puzzlelnput = "greet minds think alike"
+var puzzleputput = ""
+for character in puzzlelnput.characters {
+    switch character {
+    case "a", "e", "i", "o", "u", " ":
+        continue
+    default:
+        puzzleputput.append(character)
+    }
+}
+print(puzzleputput)
 
+// break 会立即结束整个控制流的执行。
+// 循环语句中的break，当在一个循环体中使用break时，会立刻中断该循环体的执行，然后跳转到表示循环体结束的大括号}后的第一行代码。不会本次循环迭代的代码被执行，也不会再有下次的循环迭代产生。
+// Switch语句中的break，switch代码块中使用break时，会立即中断该switch代码块的执行，并且跳转到表示switch代码块结束的大括号}后的第一行代码。
+let numberSymbol: Character = "三"
+var possinleIntegerValue: Int?
+switch numberSymbol {
+case "1", "一":
+    possinleIntegerValue = 1
+case "2", "二":
+    possinleIntegerValue = 2
+case "3", "三":
+    possinleIntegerValue = 3
+default:
+    break
+}
 
+if let integerValue = possinleIntegerValue {
+    print("The integer value of \(numberSymbol) is \(integerValue))")
+} else {
+    print("An integer value could not be found for \(numberSymbol)")
+}
+
+// 贯穿 fallthroungh
+// switch不存在隐式贯穿，所以要更加清晰和可预测，可以避免无意识地执行多个case分支从而引发的错误。
+// 如果需要C风格的贯穿特性，则在每个需要该特性的case分支中使用fallthrough关键字。
+let integerToDescribe = 5
+var description = "The number \(integerToDescribe) is"
+switch integerToDescribe {
+case 2, 3, 5, 7, 11, 13, 17, 19:
+    description += " a prime number, and also"
+    fallthrough
+default:
+    description += " an integer."
+}
+print(description)
+
+// 带标签的语句
+
+// 提前退出
+// guard的执行取决于一个表达式的布尔值。我们可以使用guard语句来要求条件必须为真时
 
 
 
