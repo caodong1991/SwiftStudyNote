@@ -55,4 +55,107 @@ if temperaturelnFahrenheit <= 32 {
 } else {
     print("it's not that cold. Wear a t-shirt.")
 }
-// Switch语句最简单的形式就是把某个值与一个或若干个相同类型的值作比较，由多个cae构成。
+// Switch语句最简单的形式就是把某个值与一个或若干个相同类型的值作比较，由多个case构成。在某些不可能涵盖所有值得情况下，可以使用默认default分支来满足。
+// 不存在隐式的贯穿，所以不需要再case分支中显示地使用break语句。
+// 每一个case分支都是必须包含至少一条语句。一个case也可以包含多个模式，用逗号分开。
+// 如果想要贯穿至特定的分支，可以使用fallthrough
+let someCharacter: Character = "a"
+switch someCharacter {
+case "a":
+    print("1111")
+    print("22222")
+case "b", "c":
+    print("3333")
+default:
+    print("4444")
+}
+
+// 区间匹配
+let approxinmateCount = 62
+let countedthings = "Moon orbiting Saturn"
+var naturakCount: String
+switch approxinmateCount {
+case 0:
+    naturakCount = "no"
+case 1..<5:
+    naturakCount = "a few"
+case 5..<12:
+    naturakCount = "several"
+case 12..<100:
+    naturakCount = "dozens of"
+case 100..<1000:
+    naturakCount = "hunderds of"
+default:
+    naturakCount = "many"
+}
+print("There are \(naturakCount) \(countedthings)")
+
+// 元组
+let somePoint = (1, 1)
+switch somePoint {
+case (0, 0):
+    print("(0, 0) is at the origin")
+case (_, 0):
+    print("(\(somePoint.0), 0) is on the x-axis")
+case (0, _):
+    print("(\(somePoint.0), 0) is on the y-axis")
+case (-2...2, -2...2):
+    print("(\(somePoint.0), \(somePoint.1)) is inside the box")
+default:
+    print("(\(somePoint.0), \(somePoint.1)) is outside the box")
+}
+
+// 值绑定
+// case分支的模式允许将匹配的值绑定到一个临时的变量或常量，这种行为就叫值绑定。
+let anotherPoint = (2, 0)
+switch anotherPoint {
+case(let x, 0):
+    print("on the x-axis with an x value of \(x)")
+case(0, let y):
+    print("on the y-axis with a y value of \(y)")
+case let (x, y):
+    print("somewhere else at (\(x), \(y))")
+}
+
+// where 
+// case分支的模式可以使用where语句来判断额外的条件
+let yetAnotherPoint = (1, -1)
+switch yetAnotherPoint {
+case let (x, y) where x == y:
+    print("(\(x), \(y) is on the line x == y)")
+case let (x, y) where x == -y:
+    print("(\(x), \(y) is on the line x == -y)")
+case let (x, y):
+    print("(\(x), \(y) is just some arbitrary point)")
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
