@@ -180,12 +180,47 @@ default:
 print(description)
 
 // 带标签的语句
+// 显示地指明break语句想要终止的是哪个循环体或者switch代码块
+var i = 0
+whileOne: while i < 10 {
+    switch i {
+    case 8:
+        break whileOne
+    default:
+        i += 1
+    }
+}
+print(i)
 
 // 提前退出
-// guard的执行取决于一个表达式的布尔值。我们可以使用guard语句来要求条件必须为真时
+// guard的执行取决于一个表达式的布尔值。我们可以使用guard语句来要求条件必须为真时,以执行guard语句后的代码。不同于if语句，一个guard语句总是有一个else分句，如果条件不为真则执行else分句中的代码。
 
+func checkup(person: [String: String!]) {
+    // 检查身份证，如果没有带，则不能进入考场
+    guard let idCard = person["idCard"] else {
+        print("没有身份证，不能进入考场！")
+        return
+    }
+    // 检查准考证，如果没有带，则不能进入考场
+    guard let examNumber = person["examNumber"] else {
+        print("没有准考证，不能进入考场！")
+        return
+    }
+    print("您的身份证号为：\(idCard), 准考证为：\(examNumber)。请进入考场！")
+}
 
+checkup(["idCard":"123456"])
+checkup(["examNumber":"4352"])
+checkup(["idCard":"123456", "examNumber":"3453245"])
 
+// 任何使用了可选绑定作为条件的一部分并被分配了值得变量或常量对于剩下的保护语句出现的代码段是可用的。如果条件不满足，else分支上的代码就会被执行。这个分支必须转移控制以退出guard语句出现的代码段。
+
+// 检测API可用性
+if #available(iOS 9, OSX 10.10, watchOS 2.0, *) {
+    // 在iOS使用iOS9的API，在OS X 使用OS X v10.10的API
+} else {
+    // 使用先前版本的iOS和OS X的API
+}
 
 
 
