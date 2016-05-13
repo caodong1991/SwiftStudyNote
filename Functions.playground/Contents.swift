@@ -99,6 +99,8 @@ func sayHello(to person: String, and anotherPserson: String) -> String {
 }
 print(sayHello(to: "Bill", and: "Ted"))
 
+// 忽略外部参数名
+// 第一个
 
 
 
