@@ -43,6 +43,65 @@ reversed = names.sort() {$0 > $1}
 reversed = names.sort{$1 > $1}
 // 当闭包非常长以至于不能再一行中进行书写时，尾随闭包变得非常有用。
 let digitNames = [0:"Zero", 1:"Two", 2:"Three", 3:"Three", 4:"Four", 5:"Five", 6:"Six", 7:"Seven", 8:"Eight", 9:"Nine"]
+let numbers = [16, 58, 510]
+let strings = numbers.map { (var number) -> String in
+    var output = ""
+    while number > 0 {
+        output = digitNames[number % 10]! + output
+        number /= 10
+    }
+    return output;
+}
+
+// 捕获值
+// 闭包可以在其被定义的上下文中捕获常量或变量。
+
+func makeIncrementor(forIncrement amount : Int) -> () -> Int {
+    var runningTotal = 0
+    print(runningTotal)
+    func incrementor() -> Int {
+        runningTotal += amount
+        print(runningTotal)
+        return runningTotal
+    }
+    return incrementor
+}
+
+let incrementByTen = makeIncrementor(forIncrement: 10)
+incrementByTen()
+incrementByTen()
+
+// 非逃逸闭包
+func someFunctionWithNoescapeClosure(@noescape closure:() -> Void) {
+    closure()
+}
+
+var completionHandlers:[() -> Void] = []
+func someFunctionWithEscapingClosure(completionHandler:() -> Void) {
+    completionHandlers.append(completionHandler)
+}
+
+class SomeClass {
+    var x = 10
+    func doSomeing() {
+        someFunctionWithEscapingClosure() {self.x = 100}
+        someFunctionWithNoescapeClosure() {x = 200}
+    }
+}
+
+let instance = SomeClass()
+
+instance.doSomeing()
+print(instance.x)
+
+completionHandlers.first?()
+print(instance.x)
+
+// 自动闭包：是自动创建的闭包，用于包装传递给函数作为参数的表达式
+var customersInLine = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+print(customersInLine.count)
+
+
 
 
 
