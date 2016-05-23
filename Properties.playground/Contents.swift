@@ -155,9 +155,26 @@ SomeStructrue.storedTypeProperty = "Another value"
 print(SomeStructrue.storedTypeProperty)
 print(SomeEnumeration.computedTypeProperty)
 
+struct AudioChannel {
+    static let thresholdLevel = 10
+    static var maxInputLevelForAllChannels = 0
+    var currentLevel: Int = 0 {
+        didSet {
+            if currentLevel > AudioChannel.thresholdLevel {
+                currentLevel = AudioChannel.thresholdLevel
+            }
+            if currentLevel > AudioChannel.maxInputLevelForAllChannels {
+                AudioChannel.maxInputLevelForAllChannels = currentLevel
+            }
+        }
+    }
+}
 
+var leftChannel = AudioChannel()
+var rightChannel = AudioChannel()
 
-
+leftChannel.currentLevel = 7
+rightChannel.currentLevel = 11
 
 
 
