@@ -92,7 +92,65 @@ struct Celsius1 {
 let bodyTemperature = Celsius1(37.0)
 
 // 可选属性类型
+class SurveyQuestion {
+    var text: String
+    var response: String?
+    init(text: String) {
+        self.text = text
+    }
+    func ask() {
+        print(text)
+    }
+}
+
+let cheeseQuestion = SurveyQuestion(text:"Do you like cheese?")
+cheeseQuestion.ask()
+
+cheeseQuestion.response = "Yes, I do like cheese"
+
+// 构造过程中常量属性的修改
+// 可以在构造过程中的任意时间点修改常量属性的值，只要在构造过程结束时是一个确定的值。一旦常量属性被赋值，它将永远不可更改。
+class SurveyQuestion1 {
+    let text: String
+    var response: String?
+    init(text: String) {
+        self.text = text
+    }
+    func ask() {
+        print(text)
+    }
+}
+
+// 默认构造器
+// 如果结构体和类的所有属性都有默认值，同时没有自定义的构造器，那么Swift会给这些结构体和类创建一个默认构造器。这个默认构造器将简单创建一个所有属性值都设置为默认值的实例。
+class ShoppingListItem {
+    var name: String?
+    var quantity = 1
+    var purchased = false
+}
+
+var item = ShoppingListItem()
+
+// 结构体的逐一成员构造器 用来初始化结构体新实例里成员属性的快捷方法。
+struct Size {
+    var width = 0.0, height = 0.0
+}
+
+let twoByTwo = Size(width: 2.0, height: 2.0)
+
+// 值类型的构造器代理
+// 构造器可以通过调用其他构造器来完成部分构造过程，这一过程称为构造器代理，他能减少多个构造器之间的代码重复。
+// 对于值类型, 可以使用self.init在自定义的构造器中引用其它的属于相同值类型的构造器。并且只能在内部调用self.init。
+struct Point {
+    var x = 0.0, y = 0.0
+}
+
+struct Rect {
+    var origin = Point()
+    var size = Size()
+    init(){}
+    init(origin: Point, size: Size)
+    
+}
 
 
-
-        
