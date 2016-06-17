@@ -149,8 +149,62 @@ struct Rect {
     var origin = Point()
     var size = Size()
     init(){}
-    init(origin: Point, size: Size)
-    
+    init(origin: Point, size: Size) {
+        self.origin = origin
+        self.size = size
+    }
+    init(center: Point, size: Size) {
+        let originX = center.x - size.width / 2
+        let originY = center.y - size.height / 2
+        self.init(origin: Point(x: originX, y: originY), size: size)
+    }
 }
+
+// 类的继承和构造过程
+// 类里面的所有存储型属性--包括所有继承自父类的属性--都必须在构造过程中设置初始值。
+// 指定构造器和便利构造器
+// 指定构造器是类中最主要的构造器。一个指定构造器将初始化类中提供的所有属性，并根据父类链往上调用父类的构造器来实现父类的初始化。
+// 便利构造器是类中比较次要的、辅助型的构造器。你可以定义便利构造器来调用同一个类中指定构造器，并为其参数提供默认值。
+// 语法
+// 指定构造器
+//init(parameters) {
+//    statements
+//}
+
+//便利构造器也要采用相同样式的写法，但需要在init关键字之前放置convenience关键字
+//convenience init(parameters) {
+//
+//}
+
+
+// 类的构造器代理规则
+// 1.指定构造器必须调用其直接父类的指定构造器。
+// 2.便利构造器必须调用同一类中定义的其他构造器。
+// 3.便利构造器必须最终以调用一个指定构造器结束。
+
+// 两段式构造过程
+// Swift中类的构造过程包含两个阶段。第一个阶段，每个存储型属性通过引入它们的类的构造器来设置初始值。每当一个存储型属性被确定后，第二阶段开始，它给每个类一次机会在新实例准备使用之前进一步定制它们的存储型属性。第二个阶段开始，它给每个类一次机会在新实例准备使用之前进一步定制它们的存储型属性。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
