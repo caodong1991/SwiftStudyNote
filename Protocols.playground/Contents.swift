@@ -2,6 +2,8 @@
 
 import Cocoa
 
+// 协议为方法、属性，以及其他特定的任务需求或功能定义蓝图
+
 // 语法
 //protocol SomeProtocol {
 //
@@ -16,6 +18,7 @@ import Cocoa
 //}
 
 // 属性要求
+// 协议可以要求所有遵循该协议的类型提供特定名字和类型的实例属性或类型属性
 
 //protocol SomeProtocol {
 //    var mustBeSettable: Int { get set}
@@ -70,3 +73,26 @@ print("Here's a random number:\(generator.random())")
 print("And another one: \(generator.random())")
 
 // 异变方法需求
+protocol Togglable {
+    mutating func toggle()
+}
+
+enum OnOffSwitch: Togglable {
+    case off, on
+    mutating func toggle() {
+        switch self {
+        case .off:
+            self = .on
+        case .on:
+            self = .off
+        }
+    }
+}
+
+var lightSwitch = OnOffSwitch.off
+lightSwitch.toggle()
+print("\(lightSwitch)")
+
+
+// 初始化器要求
+
