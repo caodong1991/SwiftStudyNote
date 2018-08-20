@@ -95,4 +95,17 @@ print("\(lightSwitch)")
 
 
 // 初始化器要求
+// 协议可以要求遵循协议的类型实现指定的初始化器
 
+// 将协议作为类型
+class Dice {
+    let siders: Int
+    let generator: RandomNumberGenerator
+    init(siders: Int, generator: RandomNumberGenerator) {
+        self.siders = siders
+        self.generator = generator;
+    }
+    func roll() -> Int {
+        return Int(generator.random() * Double(siders)) + 1
+    }
+}
