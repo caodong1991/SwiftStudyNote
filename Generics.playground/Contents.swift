@@ -79,9 +79,9 @@ if let topItem = stackOfStrings.topItem {
 
 // 类型约束
 // 语法
-//func someFuncation<T: SomeClass, U:SomeProtocol>(someT: T, someU: U) {
-//
-//}
+func someFuncation<T: SomeClass, U:SomeProtocol>(someT: T, someU: U) {
+
+}
 
 func findIndex(ofString valueToFind: String. in array: [String]) -> Int? {
     for (index, value) in array.enumerated() {
@@ -110,11 +110,76 @@ let doubleIndex = findIndex(of: 9.3, in: [3.14159, 0.1, 0.25])
 let stringIndex = findIndex(of: "Andrea", in: ["Mike", "Malcolm", "Andrea"])
 
 // 关联类型
-protocol COntainer {
+protocol Container {
     associatedtype ItemType
     mutating func append(_ item: ItemType)
     var count: Int { get }
     subscript(i: Int) -> ItemType { get }
+}
+
+struct IntStack1: Container {
+    var items = [Int]()
+    mutating func push(_ item: Int) {
+        items.append(item)
+    }
+    mutating func pop() -> Int {
+        return items.removeLast()
+    }
+    typealias ItemType = Int
+    mutating func append(_ item: Int) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Int {
+        return items[i]
+    }
+}
+
+struct Stack1<Element>: Container {
+    var items = [Element]()
+    mutating func push(_ item: Element) {
+        items.append(item)
+    }
+    mutating func pop -> Element {
+        return items.removeLast()
+    }
+    
+    mutating func append(_ item: Element) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Element {
+        return items[i];
+    }
+    
+}
+
+// 给关联类型添加约束
+protocol Container1 {
+    associatedtype Item: Equatable
+    mutating func append(_ item: Item)
+    var count: Int { get}
+    subscript(i: Int) -> Item { get }
+}
+
+// 在关联类型约束里使用协议
+protocol SuffixableContainer: Container {
+    associatedtype Suffix: SuffixableContainer where Suffix.Item == ItemType
+    func suffix(_ size: Int) -> Suffix
+}
+
+extension Stack1: SuffixableContainer {
+    func suffix(_ size: Int) -> Stack1 {
+        var result = Stack1()
+        for index in (count-size)..<count {
+            result.append(self[index])
+        }
+        return result
+    }
 }
 
 
