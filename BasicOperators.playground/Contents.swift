@@ -32,20 +32,29 @@ print(9 % 4)
 print(-9 % 4)
 print(-9 % -4)
 
-// 浮点数求余计算
-print(8 % 2.5)
+// 一元负号运算符
+let three = 3
+let minusThree = -three
+let plusThree = -minusThree
 
-// 自增和自减运算
-var i = 0
-print(i++)
-print(++i)
-print(i--)
-print(--i)
+// 一元正号算符
+let minusSix = -6
+let alsoMinusSix = +minusSix
 
-// 比较运算符 ==  ！=  >  <  >=  <= 
+// 组合运算符
+var aOther = 1
+aOther += 2
+
+
+// 比较运算符 ==  !=  >  <  >=  <=
 // 恒等===和不恒等！==来判断两个对象是否引用同一个对象实例
-
-// 三目运算符
+/* 如果两个元组的元素相同，且长度相同，元组就可以被比较。比较元组大小按照从左到右、逐值比较的方式，直到发现两个值不等时停止。如果所有值都相等，那么这一对元组我们就称它们是相等的*/
+(1, "zebra") < (2, "apple")
+(3, "apple") < (3, "bird")
+(4, "dog") == (4, "dog")
+ 
+ 
+// 三元运算符
 // 问题？答案1：答案2.
 // 等价于
 //if question {
@@ -54,21 +63,74 @@ print(--i)
 //    answer2
 //}
 
+let contentHeight = 40
+let hasHeader = true
+
+let rowHeight1 = contentHeight + (hasHeader ? 50 : 20)
+
+var rowHeight2 = contentHeight
+if hasHeader {
+    rowHeight2 = rowHeight2 + 50
+} else {
+    rowHeight2 = rowHeight2 + 20
+}
+
 // 空合运算符
 // 空合运算符（a ?? b）将对可选类型a进行空判断，如果a包含一个值就进行解析，否则就返回一个默认值b.这个运算符有两个条件：1.表达式a必须是Optional类型。2.默认值b的类型必须要和a存储值得类型保持一致。
 // 等价于 a != nil ? a! : b
 // 短路：若a非空，b不会被估值
 
+let defaultColorName = "red"
+var userDefineColorName: String?
+
+var colorNameToUse = userDefineColorName ?? defaultColorName
+print(colorNameToUse)
+
+userDefineColorName = "green"
+colorNameToUse = userDefineColorName ?? defaultColorName
+print(colorNameToUse)
+
 // 区间运算符
-// 闭区间运算符（a...b）定义一个包含从a到b（包括a和b）的所有制的区间。闭区间运算符在迭代一个区间的所有值时是非常有用的
+/* 闭区间运算符（a...b）定义一个包含从a到b（包括a和b）的所有制的区间。
+   闭区间运算符在迭代一个区间的所有值时是非常有用的*/
 for index in 1...5 {
-    print(index)
+    print("\(index) * 5 = \(index * 5)")
 }
 
-// 半开区间（a..<b）定义一个从a到b但不包含b的区间。该区间包含第一个值而不包括最后一个值。半开区间的是用性在于当你使用一个从0开始的列表的（如数组时），非常方便地从0数到列表的长度。
+/* 半开区间（a..<b）定义一个从a到b但不包含b的区间。
+   该区间包含第一个值而不包括最后一个值。
+   半开区间的是用性在于当你使用一个从0开始的列表的（如数组时），非常方便地从0数到列表的长度。*/
+let names = ["Anna", "Alex", "Brian", "Jack"]
+let count = names.count
+for i in 0..<count {
+    print("第\(i + 1)个人叫\(names[i])")
+}
 
-// 逻辑运算 操作对象是逻辑布尔值。
-// 逻辑非 !a 逻辑与 a && b 逻辑或 a || b
+// 单侧区间
+/* 闭区间操作符有另一个表达形式，可以表达一侧无限延伸的区间，省略掉区间操作符一侧的值，就是单侧区间 */
+for name1 in names[2...] {
+    print(name1)
+}
+
+for name2 in names[...2] {
+    print(name2)
+}
+
+/* 半开区间操作符也有单侧表达形式，附带上它的最终值.
+   就像你使用区间去包含一个值，最终值并不会落在区间内*/
+for name3 in names[..<2] {
+    print(name3)
+}
+
+// 可以查看一个单侧区间是否包含某个特定的值
+let range = ...5
+range.contains(7)
+range.contains(4)
+range.contains(-1)
+
+
+//// 逻辑运算 操作对象是逻辑布尔值。
+//// 逻辑非 !a 逻辑与 a && b 逻辑或 a || b
 
 
 
