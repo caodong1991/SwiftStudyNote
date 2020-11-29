@@ -32,47 +32,80 @@ var red, green, blue: Double
  命名的名字几乎可以使用任何字符，甚至包括Unicode字符。
  名字不能包含空白字符、数学符号，箭头、保留的（或者无效的）Unicode码位、连线和制表符。也不能以数字开头。
  */
+
+
 let π = 3.14159
 let 你好 = "你好"
 let 🐶🐮 = "dogcow"
+
+
 /*
   如果需要使用与Swift保留关键字相同的名称作为常量或者变量名.
   可以使用反引号 ` 将关键字包围的方式将其作为名字使用。无论如何，应当避免使用关键字作为变量或变量名.
  */
+
 var `var`:String = "word"
+
+/*
+ 可以更改现有的变量值为其他同类型的值
+ */
+
+var friendlyWelcome = "Hello!"
+friendlyWelcome = "Bonjour!"
+
+/*
+ 常量的值一旦被确定就不能更改了。尝试这样做会导致编译时报错
+ */
+
+
+let languageName = "Swift"
+//languageName = "Swift++"
 
 // 输出常量和变量
 /*
  print(<#T##items: Any...##Any#>, separator: <#T##String#>, terminator: <#T##String#>)函数来输出当前常量或变量的值
  */
 //
+
 print(welcomeMessage, separator: " ", terminator: "")
 print(welcomeMessage)
 
 /*
  Swift用字符串插值的方式把常量名或者变量名当做占位符加入到长字符串中，Swift会用当前常量或变量的值替换这些占位符。将常量或变量名放入圆括号中，并在开括号前使用反斜杠将其转义
  */
+
+
 print("The current value of friendlyWelcome is \(welcomeMessage)")
 print("x = \(x), y = \(y), z = \(z)")
+
+
 print(π)
 
 // 注释
+
 // 单行注释
+
 /* 这是一个
   多行注释*/
+
+
 /* 这是第一个多行注释的开头
   // 单行注释
 /*这是第二个被嵌套的多行注释*/
 这是第一个多行注释的结尾*/
+
 
 // 分号
 /*
  Swift不强制要求在每条语句的结尾处使用分号;
  有一种情况下必须要用分号，即同一行内写多条独立的语句;
  */
+
+
 let cat = "🐱"; print(cat)
 
 // 整数
+
 /*
  就是没有小数部分的数字。整数可以是有符号(正、负、零)或者无符号(正、零)。
  swift提供了8，16，32，64的有符号和无符号整数类型。
@@ -83,8 +116,10 @@ let cat = "🐱"; print(cat)
  Int 长度与当前平台的原生字长相同。在32位平台上，Int 和 Int32 长度相同。在64位平台上，Int 和 Int64 长度相同
  UInt 长度与当前平台的原生字长相同.
  */
+
 let minValue = UInt8.min
 let maxValue = UInt8.max
+
 //
 //
 
