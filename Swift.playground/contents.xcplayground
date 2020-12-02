@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='macos' buildActiveScheme='true'>
+    <pages>
+        <page name='01 - SwiftBasics'/>
+        <page name='02 - BasicOperators'/>
+        <page name='03 - StringsAndCharacters'/>
+        <page name='Untitled Page 3'/>
+        <page name='Untitled Page 4'/>
+        <page name='Untitled Page 5'/>
+        <page name='Untitled Page 6'/>
+        <page name='Untitled Page 7'/>
+        <page name='Untitled Page 8'/>
+        <page name='Untitled Page 9'/>
+        <page name='Untitled Page 10'/>
+        <page name='Untitled Page 11'/>
+        <page name='Untitled Page 12'/>
+        <page name='Untitled Page'/>
+    </pages>
+</playground>
