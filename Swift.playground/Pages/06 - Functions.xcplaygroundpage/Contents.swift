@@ -3,6 +3,7 @@ import Foundation
 //函数
 /*
  函数是一段完成特定任务的独立代码片段。
+ 通过给函数命名来标识某个函数的功能，这个名字可以在被用来在需要的时候“调用”这个函数来完成它的任务。
  */
 // 函数的定义与调用
 /*
@@ -11,7 +12,7 @@ import Foundation
  函数名：用来描述函数执行的任务。
  调用：使用一个函数的时候，用函数名来调用这个函数
  实参：调用函数时，传给它匹配的输入值。
- 一个函数的实参必须与函数参数表里的参数的顺序一致。
+ 函数的实参必须与函数参数表里的参数的顺序一致。
  */
 func greet(person: String) -> String {
     let greeting = "hello " + person + "!"
@@ -31,8 +32,7 @@ print(greetAgain(person: "Anna"))
 // 函数的参数与返回值
 // 无参函数
 /*
- 函数可以没有参数。
- 尽管这个函数没有参数，但是定义中在函数名后还是需要一对圆括号。当被调用时，也需要在函数名后写一对圆括号。当被调用时，也需要在函数名后写一对圆括号。
+ 函数可以没有参数。尽管这个函数没有参数，但是定义中在函数名后还是需要一对圆括号。当被调用时，也需要在函数名后写一对圆括号。当被调用时，也需要在函数名后写一对圆括号。
  */
 func sayHelloWorld() -> String {
     return "hello, world"
@@ -43,6 +43,7 @@ print(sayHelloWorld())
 // 多参数函数
 /*
  函数可以有多种输入参数，这些参数被包含在函数的括号之中，以逗号分隔。
+ 注意下面的函数和上面greet(person:)是不同的。虽然它们都有着相同的名字greet，但是greet(person:alreadyGreeted:)函数需要两个参数，而greet(person:)只需要一个参数。
  */
 func greet(person: String, alreadyGreeted: Bool) -> String {
     if alreadyGreeted {
@@ -57,7 +58,7 @@ print(greet(person: "Tim", alreadyGreeted: true))
 // 无返回值函数
 /*
  函数可以没有返回值。
- 虽然没有定义返回值，但函数依然返回了值。没有定义返回类型的函数会返回特殊的值，叫Void。就是一个空的元组，没有任何元素，可以写成（）。
+ 虽然没有定义返回值，但函数依然返回了值。没有明确定义返回类型的函数会返回特殊的值，叫Void。就是一个空的元组，没有任何元素，可以写成（）。
  */
 func sayGoodbye(person: String) {
     print("Goodbye, \(person)!")
@@ -100,11 +101,17 @@ func minMax(array: [Int]) -> (min: Int, max: Int) {
 
 let bounds = minMax(array: [9, -4, 7, 3, -9, 98])
 print("min is \(bounds.0) and max id \(bounds.1)")
+/*
+ 元组的成员不需要在元组从函数中返回时命名，因为它们的名字已经在函数返回类型中指定了。
+ */
+print("min is \(bounds.min) and max id \(bounds.max)")
+
 
 // 可选元组返回类型
 /*
  如果函数返回的元组类型有可能真个元组都没有值，可以使用可选的元组返回类型反映整个元组可以是nil的事实。
  可以通过元组类型的右括号后放置一个问号来定义一个可选元组，例如(Int, Int)? (String, Int, Bool)？
+ * 可选元组类型如(Int, Int)?与元组包含可选类型如(Int?, Int?)是不同的。可选的元组类型，整个元组是可选的，而不只是元组中每个元素值。
  */
 func minMaxNil(array: [Int]) -> (min: Int, max: Int)? {
     if array.isEmpty {
@@ -160,7 +167,13 @@ someFunction(firstParameterName: 1, secondParameterName: 2)
 /*
  在参数名称之前指定它的参数标签，中间以空格分隔
  */
+func someFunction(argumentLabel parameterName: Int) {
+    
+}
 
+/*
+ 参数标签的使用能够让一个函数在调用时更有表达力，更类似自然语言，并且扔保持了函数内部的可读性以及清晰的意图。
+ */
 func greet(person: String, from hometown: String) ->String {
     return "Hello \(person)! Glad you could visit from \(hometown)"
 }
@@ -196,6 +209,7 @@ someFunction(parameterWithoutDefault: 4)
  函数调用时，可以用可变参数来指定函数参数可以被传入不确定数量的输入值。
  通过在变量类型名后面加入（...）的方式来定义可变参数。
  可变参数的传入值在函数体中变为此类型的一个数组
+ 注意，一个函数最多只能拥有一个可变参数。
  */
 func arithmeticMean(_ numbers: Double...) -> Double {
     var total: Double = 0

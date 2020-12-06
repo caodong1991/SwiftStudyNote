@@ -2,7 +2,7 @@ import Foundation
 
 // 闭包
 /*
- 闭包是包含函数代码块，可以在代码中被传递和使用。
+ 闭包是自包含函数代码块，可以在代码中被传递和使用。
  闭包可以捕获和存储所在上下文中任意常量和变量的引用。被称为包裹常量和变量。
  */
 /*
@@ -35,8 +35,9 @@ let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
 /*
  sorted(by:)方法接受一个闭包，该闭包函数需要传入与数组元素类型相同的两个值，并返回一个布尔类型值来表明当排序结束后传入的第一个参数排在第二个参数前面还是后面。
  如果第一个参数值出现在第二个参数值前面，排序闭包函数需要返回true，反之返回false。
- 在内联闭包表达式中，函数和返回值类型都写在大括号内，而不是大括号外。
- 闭包函数体部分由关键字in引入。该关键字表示闭包的参数和返回类型定义已经完成，闭包函数体即将开始。
+ */
+/*
+ 提供排序闭包函数的一种方式是撰写一个符合其类型要求的普通函数，并将其作为sorted(by:)方法的参数传入。
  */
 func backwards(s1: String, s2: String) -> Bool {
     return s1 > s2
@@ -59,6 +60,9 @@ var reversedNames = names.sorted(by: backwards)
 
 /*
  上面的写法过于繁琐，闭包表达式版本。
+ 内联闭包参数和返回值类型声明与backward(s1:, s2:)函数类型声明相同。
+ 在内联闭包表达式中，函数和返回值类型都写在大括号内，而不是大括号外。
+ 闭包的函数体部分由关键字in引入。该关键字表示闭包的参数和返回类型定义已经完成，闭包函数体即将开始。
  */
 reversedNames = names.sorted(by: {(s1: String, s2: String) -> Bool in
     return s1 > s2
@@ -66,10 +70,9 @@ reversedNames = names.sorted(by: {(s1: String, s2: String) -> Bool in
 
 /*
  由于这个闭包的函数体部分如此短，以至于可以将其改写成一行代码。
- 一对圆括号仍然包裹住了方法的整个参数。然而，参数现在变成了内联闭包
- 
+ 一对圆括号仍然包裹住了方法的整个参数。然而，参数现在变成了内联闭包。
  */
-reversedNames = names.sorted(by: {(s1: String, s2: String) -> Bool in return s1 > s2}) //
+reversedNames = names.sorted(by: {(s1: String, s2: String) -> Bool in return s1 > s2})
 
 // 根据上下文推断类型
 /*
@@ -109,7 +112,8 @@ reversedNames = names.sorted(by: >)
 /*
  如果需要将一个很长的闭包表达式作为最后一个参数传递给函数，将这个闭包替换成为尾随闭包的形式很有用。
  尾随闭包是一个书写在函数括号之后的闭包表达式，函数支持将其作为一个参数调用。
- 在使用尾随闭包时，不用写出它的参数标签。
+ 在使用尾随闭包时，不用写出第一个尾随闭包对应的参数标签。
+ 函数调用可包含多个尾随闭包。
  */
 func someFunctionThatTakesAClousure(closure: () -> Void) {
     // 函数体部分
@@ -153,6 +157,31 @@ let strings = numbers.map { (number) -> String in
         number /= 10
     } while number > 0
     return output;
+}
+
+/*
+ 如果函数接收多个闭包，你可省略第一个尾随闭包的参数标签，但要给后续的尾随闭包写标签。
+ */
+func download(_ picture: String, from server: String?) -> String? {
+    guard server != nil else {
+        return nil
+    }
+    
+    return "\(picture) \(server!)"
+}
+
+func loadPicture(from server: String, completion: (String) -> Void, onFailure: () -> Void) {
+    if let picture = download("photo", from: "name") {
+        completion(picture)
+    } else {
+        onFailure
+    }
+}
+
+loadPicture(from: "123") { picture in
+    print(picture)
+} onFailure: {
+    print("Couldn't download the next picture")
 }
 
 // 捕获值
@@ -214,19 +243,25 @@ var completionHandlers: [() -> Void] = []
 func someFunctionWithEscapingClosure(completionHandler: @escaping () -> Void) {
     completionHandlers.append(completionHandler)
 }
+/*
+ 
+ */
 
 func someFunctionWithNoescapeClosure(closure:() -> Void) {
     closure()
 }
 
 /*
-将一个闭包标记为@escaping意味着必须在比包中显示的引用self。
+ 将一个闭包标记为@escaping意味着必须在闭包中显示的引用self。
+ 如果self指向类的实例，那么在逃逸闭包中引用self就需要额外注意。在逃逸闭包中捕获self很容易不小心造成强引用循坏。
+ 通常，在代码块或者闭包中使用闭包就会让它隐式捕获变量，但在这里必须显示地调用。如果你想要自己捕获self，就明显地写出来，或者在闭包的捕获列表中包含self。
+ 显示地写出self能让你更清楚地表达自己的意图，并且提醒你去确认这里有没有应用循环。
 */
 class SomeClass {
     var x = 10
     func doSomeing() {
-        someFunctionWithEscapingClosure() {self.x = 100}
-        someFunctionWithNoescapeClosure() {x = 200}
+        someFunctionWithEscapingClosure() {self.x = 100}  // 显式地引用self
+        someFunctionWithNoescapeClosure() {x = 200}  // 隐式地应用self
     }
 }
 
@@ -237,6 +272,29 @@ print(instance.x) // 200
 
 completionHandlers.first?()
 print(instance.x) // 100
+
+/*
+ 通过把self放在闭包捕获列表来捕获self的doSomething()版本
+ */
+class otherSomeClass {
+    var x = 10
+    func doSomeing() {
+        someFunctionWithEscapingClosure() {[self] in x = 100}
+        someFunctionWithNoescapeClosure() {x = 200}
+    }
+}
+
+/*
+ 如果self是结构体或者枚举的实例，就可以隐式地引用self，逃逸闭包不能捕获可修改的self引用。
+ */
+struct SomeStruct {
+    var x = 10
+    mutating func doSomeing() {
+        someFunctionWithNoescapeClosure() {x = 200}
+        // 下面是错误的。因为在一个异变方法中，所以self是可编辑的。这就是违反了逃逸闭包不能捕获结构体的可编辑引用self的规则。
+//        someFunctionWithEscapingClosure() { x = 100}
+    }
+}
 
 // 自动闭包
 /*
