@@ -395,3 +395,126 @@ let validNames = keys.compactMap { $0 }
 print(validNames)
 let counts = keys.compactMap { $0?.count }
 print(counts)
+
+
+// 高阶函数
+// 范式转换
+/*
+ 命令式编程风格常常迫使我们处于性能考虑, 把不同的任务交织起来，以便能够用一次循环来完成多个任务。
+ 在面向对象的命令式编程语言里，重用的单元是类和类之间沟通用的消息。
+ 而函数式编程用高阶函数把我们解放出来，让我们站在更高的抽象层次上去考虑问题，把问题看得更清楚。
+ 函数式语言提倡在有限的几种关键数据结构（如list, set, map）上运用针对这些数据结构高度优化过的操作，以此构成基本的运转机构。开发者再根据具体用途，插入自己的数据结构和高阶函数去调整机构的运转方式。
+ 简洁：面向对象编程通过封装不确定因素来使代码能被人理解，函数式编程通过尽量减少不确定因素来使代码能被人理解。
+ */
+/*
+ 读入一个文本文件，确定所有单词的使用频率并从高到低排序，打印出所有单词及其频率的排序列表
+ */
+let words = """
+There are moments in life when you miss someone so much that you just want to pick them from your dreams and hug them for real Dream what you want to dream go where you want to go be what you want to be because you have only one life and one chance to do all the things you want to do
+"""
+
+let non_words: Set = ["the", "and", "of", "to", "a", "i", "it", "in", "or", "is", "as", "so", "but", "be"]
+
+/*
+ 传统解决方案
+ */
+func wordFreq(words: String) -> [String: Int] {
+    var wordDict: [String: Int] = [:]
+    let wordList = words.split(separator: " ")
+    for word in wordList {
+        let lowerCaseWord = word.lowercased()
+        if !non_words.contains(lowerCaseWord) {
+            if let count = wordDict[lowerCaseWord] {
+                wordDict[lowerCaseWord] = count + 1
+            } else {
+                wordDict[lowerCaseWord] = 1
+            }
+        }
+    }
+    return wordDict
+}
+
+print(wordFreq(words: words))
+
+/*
+ 函数式
+ */
+func wordFreq2(words: String) -> [String: Int] {
+    var wordDict: [String: Int] = [:]
+    let wordList = words.split(separator: " ")
+    // 全写形式
+    /*
+    wordList.map { (word) -> String in
+        word.lowercased()
+    }.filter { (word) -> Bool in
+        !non_words.contains(word)
+    }.forEach { (word) in
+        wordDict[word] = (wordDict[word] ?? 0) + 1
+    }
+    */
+    // 简写
+    wordList.map { $0.lowercased() }.filter { !non_words.contains($0) }.forEach { wordDict[$0] = (wordDict[$0] ?? 0) + 1 }
+    
+    return wordDict
+}
+
+print(wordFreq2(words: words))
+
+/*
+ 找到一个字符串里面某个字符数组里面第一个出现的字符的位置。
+ 比如“Hello, world”, ["a", "e", "i", "o", "u"], 那e是在字符串第一个出现的字符，位置是1，返回1
+ */
+let source = "Hello world"
+let target: [Character] = ["a", "e", "i", "o", "u"]
+zip(0..<source.count, source).forEach { (index, char) in
+    if target.contains(char) {
+        print(index)
+    }
+}
+
+/*
+ 假设我们有一个名字列表，其中一些条目由单个字符构成。现在的任务是，将出去单字符条目之外的列表内容，放在一个逗号分隔的字符串里返回，且每个名字的首字母都要大写。
+ */
+let employee = ["neal", "s", "stu", "j", "rich", "bob", "aiden", "j", "ethan", "liam", "mason", "noah", "lucas", "jacob", "jack"]
+
+/*
+ 命令式解法
+ */
+func cleanNames(names: Array<String>) -> String {
+    var cleanNames = " "
+    for name in names {
+        if name.count > 1 {
+            cleanNames += name.capitalized + ","
+        }
+    }
+    cleanNames.remove(at: cleanNames.index(before: cleanNames.endIndex))
+    return cleanNames
+}
+
+print(cleanNames(names: employee))
+
+/*
+ 函数式解法
+ */
+let cleanedNames = employee.filter { $0.count > 1}.map { $0.capitalized }.joined(separator: ", ")
+print(cleanedNames)
+
+// Swift的劣势 - 并行
+extension Array where Element: Any {
+    func concurrentMap<T>(_ transform: (Element) -> T) -> [T] {
+        let n = self.count
+        if n == 0 {
+            return []
+        }
+        var result = Array<T>()
+        result.reserveCapacity(n)
+        DispatchQueue.concurrentPerform(iterations: n) { (i) in
+            result.append(transform(self[i]))
+        }
+        return result
+    }
+}
+
+let result = employee.filter { $0.count > 1}.concurrentMap { $0.capitalized }.joined(separator: ", ")
+print(result)
+
