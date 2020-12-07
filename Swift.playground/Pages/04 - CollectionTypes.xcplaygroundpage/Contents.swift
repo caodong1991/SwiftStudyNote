@@ -1,6 +1,5 @@
 import Foundation
 
-/*
 // 集合类型
 /*
  数组：有序数据的集
@@ -12,7 +11,6 @@ import Foundation
  如果创建一个Arrays、Sets、Dictionaries并且把它分配成一个变量，这个集合将会是可变的。
  这意味着我们可以在创建之后添加更多或移除已存在的数据项来改变这个集合的大小。如果我们把Arrays、Sets或Dictionaries分配成常量，那么它就是不可变的，它的大小不能被改变。
  */
-
 
 // 数组
 /*
@@ -266,6 +264,165 @@ shoppingList.removeSubrange(1...2)
 shoppingList.removeAll(keepingCapacity: true)
 print(shoppingList.capacity)
 
+// ArraySlice
+/*
+ ArraySlice是数组或者其他ArraySlice的一段连续切片，和原数组共享内存。
+ 当改变ArraySlice的时候，ArraySlice会copy出来，形成单独内存。
+ ArraySlice拥有和Array基本完全类似的方法。
+ */
+let colors = ["Neutral", "Orange", "White", "Black", "Red", "Yellow"]  // Array<String>
+colors[1...5] // ArraySlice<String>
+
+/*
+ 通过Drop得到ArraySlice
+ dropFirst(:)"移除"原数组前面指定个数的元素得到一个ArraySlice
+ dropLast(:)"移除"原数组后面指定个数的元素得到一个ArraySlice
+ drop(:)"移除"原数组符合指定条件的元素得到一个ArraySlice
+ */
+let numberArray = [5, 2, 10, 1, 0, 100, 46, 99]
+print(numberArray.dropFirst())   // [2, 10, 1, 0, 100, 46, 99]
+print(numberArray.dropFirst(3))  // [1, 0, 100, 46, 99]
+print(numberArray.dropLast())    // [5, 2, 10, 1, 0, 100, 46]
+print(numberArray.dropLast(3))   // [5, 2, 10, 1, 0]
+print(numberArray.drop { $0 < 15 })  // [100, 46, 99]
+
+/*
+ 通过prefix得到ArraySlice
+ prefix() 获取数组前面指定个数的元素组成的ArraySlice
+ prefix(upTo:) 获取数组到指定位置（不包含指定位置）前面的元素组成的ArraySlice
+ prefix(through:) 获取数组到指定位置（包含指定位置）前面的元素组成的ArraySlice
+ prefix(while:) 获取数组前面符合条件的的元素（到第一个不符合条件的元素截止）组成的ArraySlice
+ */
+print(numberArray.prefix(4))               // [5, 2, 10, 1]
+print(numberArray.prefix(upTo: 4))         // [5, 2, 10, 1]
+print(numberArray.prefix(through: 4))      // [5, 2, 10, 1, 0]
+print(numberArray.prefix { $0 < 10 })      // [5, 2]
+
+/*
+ 通过suffix 得到ArraySlice
+ suffix() 获取数组后面指定个数的元素组成的ArraySlice
+ suffix(from:) 获取数组从指定位置到结尾（包含指定位置）的元素组成的ArraySlice
+ */
+print(numberArray.suffix(3))           // [100, 46, 99]
+print(numberArray.suffix(from: 5))     // [100, 46, 99]
+
+/*
+ 通过Range得到ArraySlice
+ 可以通过对数组索引指定Range获取ArraySlice，可以使用闭区间、半开半闭区间、单侧区间、甚至可以使用...来获取整个数组组成的ArraySlice
+ */
+print(numberArray[3...5])         // [1, 0, 100]
+print(numberArray[3..<5])         // [1, 0]
+print(numberArray[...2])          // [5, 2, 10]
+print(numberArray[..<2])          // [5, 2]
+print(numberArray[6...])          // [46, 99]
+print(numberArray[...])           // [5, 2, 10, 1, 0, 100, 46, 99]
+
+/*
+ ArraySlice转为Array
+ ArraySlice无法直接复制一个Array的常量或变量，需要使用Array(slice)
+ */
+let slice = numberArray[3...5]
+let otherNumberArray = Array(slice)
+
+/*
+ ArraySlice和原Array是相互独立的，它们添加删除元素不会影响对方
+ */
+var someNumberArray = [10, 46, 99]
+var someSlice = someNumberArray.dropLast()
+someNumberArray.append(333)
+someSlice.append(555)
+print(someNumberArray)
+print(someSlice)
+
+// 数组重排
+/*
+ 数组元素的随机化
+ shuffle() 在原数组上将数组元素打乱，只能作用在数组变量上
+ shuffled()返回原数组的随机化数组，可以作用在数组变量和常量上
+ */
+var numbers1 = [Int](1...8)
+numbers1.shuffle()
+print(numbers1)
+
+let numbers2 = [Int](1...8)
+var shuffledNumbers = numbers2.shuffled()
+print(shuffledNumbers)
+
+/*
+ 数组的逆序
+ reverse() 在原数组上将数组逆序，只能作用在数组变量上。
+ reversed() 返回原数组的逆序"集合表示"，可以作用在数组变量和常量上，该方法不会分配新内存空间。
+ */
+var numbers3 = [Int](1...8)
+numbers3.reverse()
+print(numbers3)
+
+let numbers4 = [Int](1...8)
+var reversedNumbers = numbers4.reversed()
+print(reversedNumbers)
+
+/*
+ 数组的分组
+ partition 将数组以某个条件分组，数组前半部分否是不符合条件的元素，数组后半部分都是符合条件的元素。
+ */
+var numbers5 = [10, 20, 45, 30, 98, 101, 30, 4]
+let index = numbers5.partition { (element) -> Bool in
+    element > 30
+}
+print(numbers5)
+let partition1 = numbers5[..<index]
+let partition2 = numbers5[index...]
+print(partition1)
+print(partition2)
+
+/*
+ 数组的排序
+ sort() 在原数组上将元素排序，只能作用于数组变量
+ sorted() 返回原数组的排序结果数组，可以作用于数组变量和常量上。
+ */
+var numbers6 = [10, 20, 45, 30, 98, 101, 30, 4]
+numbers6.sort()
+print(numbers6)
+
+let numbers7 = [10, 20, 45, 30, 98, 101, 30, 4]
+var sortedNumbers = numbers7.sorted()
+print(sortedNumbers)
+
+/*
+ 交换数组两个元素
+ swapAt(_:_:)交换指定位置的两个元素
+ */
+var numbers8 = [10, 20, 45, 30, 98, 101, 30, 4]
+numbers8.swapAt(numbers8.startIndex, numbers8.endIndex - 1)
+print(numbers8)
+
+// 数组拼接
+/*
+ 字符串数组拼接
+ joined() 拼接字符串数组里的所有元素为一个字符串
+ joined(separator:) 以给定的分隔符拼接字符串数组里的所有元素为一个字符串
+ */
+var strings = ["hello", "world"]
+print(strings.joined())
+print(strings.joined(separator: ", "))
+
+/*
+ 元素为Sequence数组的拼接
+ joined() 拼接数组里的所有元素为一个更大的Sequence
+ joined(separator:) 以给定的分隔符拼接数组里的所有元素为一个更大的Sequence
+ */
+let ranges = [0..<3, 8..<10, 15..<17]
+for range in ranges {
+    print(range)
+}
+for i in ranges.joined() {
+    print(i)
+}
+
+let nestedNumbers = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+let joined = nestedNumbers.joined(separator: [-1, -2])
+print(joined)
+
 // 数组的遍历
 /*
  for-in
@@ -304,9 +461,7 @@ for (index, item) in shoppingList.enumerated() {
 for index in 0..<shoppingList.count { // 等价普通写法
     print("item \(index + 1):\(shoppingList[index])")
 }
-*/
 
-/*
 // 集合
 /*
  集合用来存储相同类型并且没有确定顺序的值。
@@ -341,14 +496,14 @@ var favoriteGenres: Set<String> = ["Rock", "Classical", "Hip hop"]
 var otherFavoriteGenres: Set = ["Rock", "Classical", "Hip hop"] // 由于数组字面量中的所有元素类型相同，Swift可以推断出Set<String>为正确类型
 
 // 访问和修改一个集合
-//
 /*
  Set中的数量
+ 使用count获取Set里元素个数
  */
 print("I have \(favoriteGenres.count) favorite music genres.")
 
 /*
- 检查Count是否为0
+ 使用isEmpty判断Set是否为空
  */
 if favoriteGenres.isEmpty {
     print("As far as music goes, I'm not picky.")
@@ -359,7 +514,6 @@ if favoriteGenres.isEmpty {
 /*
  insert(_:)添加一个新元素
  update(with:)如果已经有相等的元素，替换为新元素。如果Set没有，则插入。示例在哈希值处。
-
  */
 favoriteGenres.insert("Jazz")
 
@@ -376,6 +530,11 @@ if let removeGenre = favoriteGenres.remove("Rock") { // 如果该值是Set的一
  删除所有元素
  */
 //favoriteGenres.removeAll(）
+
+/*
+ removeFirst() 删除Set的第一个元素，因为Set是无序的，所以第一个元素并不是放入的第一个元素，是哈希值排序好的第一个元素
+ */
+favoriteGenres.removeFirst()
 
 /*
  判断Set是否包含一个特定的值
@@ -417,15 +576,14 @@ let unionArray = oddDigits.union(evenDigits).sorted()
 let intersectArray = oddDigits.intersection(evenDigits).sorted()
 
 /*
- 使用symmetricDifference(_:)方法根据两个集合不相交的值创建一个新的集合。交集的补集
+ 使用symmetricDifference(_:)方法根据两个集合不相交的值创建一个新的集合。交集的补集、对称差集
  */
 let symmetricDifferenceArray = oddDigits.symmetricDifference(singleDigitprimeNumbers).sorted()
 
 /*
- 使用subtract(_:)方法根据不在另一个集合中的值创建一个新的集合。
+ 使用subtract(_:)方法根据不在另一个集合中的值创建一个新的集合。相对补集
 */
 let subtractArray = oddDigits.subtracting(singleDigitprimeNumbers).sorted()
-
 
 // 集合成员关系和相等
 let houseAnimals: Set = ["🐶", "🐱"]
@@ -461,15 +619,11 @@ farmeAnimals.isSuperset(of: houseAnimals)
 houseAnimals.isStrictSubset(of: farmeAnimals)
 farmeAnimals.isStrictSuperset(of: houseAnimals)
 
-
- 
 /*
  使用isDisjoint(with:)方法来判断两个集合是否不含有相同的值。(是否没有交集)
 */
 farmeAnimals.isDisjoint(with:cityAnimals)
  
-
-
 // 集合类型的哈希值
 /*
  一个类型为了存储在集合中，该类型必须是可哈希化的，该类型必须提供一个方法来计算它自身的哈希值。
@@ -514,9 +668,6 @@ personSet.update(with: Person(name: "wamgwu", age: 18))
 let otherPersonSet = personSet.filter { $0.age > 20}
 print(personSet)
 print(otherPersonSet)
- 
- */
-
 
 // 字典
 // 字典类型的快捷语法
@@ -603,6 +754,37 @@ if let removedValue = airpots.removeValue(forKey: "DUB") {
     print("The airports dictionary does not contain a value for DUB.")
 }
 
+/*
+ 合并两个字典
+ */
+print("merge before: \(airpots)")
+airpots.merge(["LHR": "London", "SH": "ShangHai"]) { (currentValue, _) in currentValue}
+airpots.merge(["LHR": "New London", "SH": "ShangHai"]) { (_, newValue) in newValue}
+
+/*
+ 虽然字典是无序的，但是每个key-Value键值对在扩容之前，位置是稳定的。
+ 如果需要保持顺序的key-value键值对，可以使用KeyValuePairs
+ */
+let imagePaths = ["Star": "/glyphs/star.png",
+                  "portrait": "/images/content/portrait.jpg",
+                  "spacer": "/images/shared/spacer.gif"]
+//let glyphIndex = imagePaths.firstIndex(where: { $0.value.hasPrefix("/glyphs") })
+let glyphIndex = imagePaths.firstIndex { (_, value) -> Bool in
+    value.hasPrefix("/glyphs")
+}
+if let index = glyphIndex {
+    print(index)
+    print("The '\(imagePaths[index].key)' image is a glyphs.")
+} else {
+    print("No glyphs found!")
+}
+
+let recordTimes: KeyValuePairs = ["florence Griffith-Joyber": 10.49,
+                                  "Evelyn Ashford": 10.76,
+                                  "Evelyn Ashford": 10.79,
+                                  "Marlies Gohr": 10.81]
+print(recordTimes.first!)
+
 // 字典遍历
 /*
  遍历时，数据项以（key, value）元组形式返回，并且可以使用临时常量或变量来分解这些元组。
@@ -623,33 +805,14 @@ for airportName in airpots.values {
 }
 
 /*
- 因为字典时无序的，如果要以特定的顺序遍历字典的键或值，使用键或值的Sorted()方法
- */
-for airportCode in airpots.keys.sorted() {
-    print("Airport code: \(airportCode)")
-}
-
-/*
  若需要某个字典的键集合或者值集合来作为某个接受Array实例，可以直接使用keys或者values属性构造一个新数组
  */
 let airportCodes = [String](airpots.keys)
 let airportNames = [String](airpots.values)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+ 因为字典时无序的，如果要以特定的顺序遍历字典的键或值，使用键或值的Sorted()方法
+ */
+for airportCode in airpots.keys.sorted() {
+    print("Airport code: \(airportCode)")
+}
