@@ -294,7 +294,7 @@ let centerRect = Rect(center: Point(x: 4.0, y: 4.0), size: Size(width: 3.0, heig
  便利构造器必须为任意属性（包括所有同类中定义的）赋新值之前代理调用其他构造器，否则，便利构造器赋予的新值将被该类的指定构造器所覆盖。
  
  安全检查4
- 构造器在第一阶段完成之前，不能调用任何实例方法，不能读取任何实例属性的值，不能饮用self作为一个值。
+ 构造器在第一阶段完成之前，不能调用任何实例方法，不能读取任何实例属性的值，不能引用self作为一个值。
  
  类的实例在第一阶段结束以前并不是完全有效的。只有第一阶段完成以后，累的实例才是有效的，才能访问属性和调用方法。
  
@@ -343,6 +343,7 @@ print("Bicyle: \(bicyle.description)")
 
 /*
  如果子类的构造器没有在阶段2过程中做自定义操作，并且父类有一个无参数的指定构造器，可以在所有子类的存储属性赋值之后省略super.init()的调用。
+ 子类可以在构造过程修改继承来的变量属性，但是不能修改继承来的常量属性。
  */
 class HoverBoard: Vehicle {
     var color: String
@@ -429,13 +430,13 @@ for item in breakfastList {
  为了妥善处理这种构造过程中可能会失败的情况。可以在一个类、结构体或是枚举类型的定义中，添加一个或多个可失败构造器。
  其语法为在init关键字后面添加问号 init?
  可失败构造器的参数名和参数类型，不能与其他非可失败构造器的参数名，及其参数类型相同。
- 可失败构造器会创建一个类型为资深类型的可选类型的对象。通过return nil 语句来表明可失败构造器在何种情况下应该失败。
- 严格来说，构造器都不支持返回值。
+ 可失败构造器会创建一个类型为自身类型的可选类型的对象。通过return nil 语句来表明可失败构造器在何种情况下应该失败。
+ 严格来说，构造器都不支持返回值。因为构造器本身的作用，只是为了确保对象能被正确构造。因此你只是用 return nil 表明可失败构造器构造失败，而不要用关键字 return 来表明构造成功。
  */
 let wholeNumber: Double = 12345.0
 let pi = 3.14159
 
-if let valueMaintained = Int(exactly: wholeNumber) {
+if let valueMaintained = Int(exactly: wholeNumber) { // 确保数字类型之间的转换能保持精确的值
     print("\(wholeNumber) conversion to Int maintained value of \(valueMaintained)")
 }
 
