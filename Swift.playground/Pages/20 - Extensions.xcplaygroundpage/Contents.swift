@@ -161,6 +161,9 @@ extension Int {
     }
 }
 
+/*
+ 注意 number.kind 已经被认为是 Int.Kind 类型。所以，在 switch 语句中所有的 Int.Kind case 分支可以被缩写，就像使用 .negative 替代 Int.Kind.negative.
+ */
 func printIntegerKinds(_ numbers: [Int]) {
     for number in numbers {
         switch number.kind {
