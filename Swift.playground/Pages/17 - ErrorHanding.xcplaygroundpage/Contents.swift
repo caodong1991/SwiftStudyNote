@@ -180,6 +180,9 @@ do {
     y = nil
 }
  
+/*
+ 如果你想对所有的错误都采用同样的方式来处理，用 try? 就可以让你写出简洁的错误处理代码。
+ */
  func fetchData() -> Data? {
      if let data = try? fetchDataFromDisk() { return data }
      if let data = try? fetchDataFromServer() { return data }
