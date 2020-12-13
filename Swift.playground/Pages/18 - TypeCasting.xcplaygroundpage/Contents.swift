@@ -50,6 +50,8 @@ let library = [
     Song(name: "Never Gonna Give You Up", artist: "Rick Astley")
 ]
 
+print(type(of: library))
+
 // 类型检查
 /*
  用类型检查操作符is来检查一个实例是否属于特定子类。
