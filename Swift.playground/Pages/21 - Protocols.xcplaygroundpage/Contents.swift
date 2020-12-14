@@ -115,11 +115,11 @@ print("And another one: \(generator.random())")
 
 // 异变方法要求
 /*
- 有时需要在方法中改变（或变异）方法缩写的实例。
+ 有时需要在方法中改变（或变异）方法所属的实例。
  例如，在值类型（即结构体和枚举）的实例方法中，将mutating关键字作为方法的前缀，写在func关键字之前，表示可以在该方法中修改它所属的实例以及实例的任意属性的值。
  如果在协议定义中定义了一个实例方法，该方法会改变遵循该协议的类型实例，那么在定义协议时需要在方法前加mutating关键字。这使得结构体和枚举能够遵循此协议并满足此方法需求
  
- 实现协议中的mutating方法时，若是类类型，则不用谢mutating关键字。而对于结构体和枚举，则必须写mutating关键字。
+ 实现协议中的mutating方法时，若是类类型，则不用写mutating关键字。而对于结构体和枚举，则必须写mutating关键字。
  */
 protocol Togglable {
     mutating func toggle()
@@ -365,6 +365,54 @@ extension Hamster: TextRepresentable {}
 let simonTheHamster = Hamster(name: "Simon")
 let somethingTextRepresentable: TextRepresentable = simonTheHamster
 print(somethingTextRepresentable.textualDescription)
+
+// 使用合成实现来采纳协议
+/*
+ Swift 可以自动提供一些简单场景下遵循 Equatable、Hashable 和 Comparable 协议的实现。在使用这些合成实现之后，无需再编写重复的代码来实现这些协议所要求的方法。
+ */
+
+// Equatable
+/*
+ - 遵循Equatable协议且只有存储属性的结构体。
+ - 遵循Equatable协议且只有关联类型的枚举
+ - 没有任何关联类型的枚举
+ 在包含类型原始声明的文件中声明对Equatable协议的遵循，可以得到 == 操作符的合成实现，且无需自己编写任何关于 == 的实现代码。Equatable协议同时包含 != 操作符的默认实现。
+ */
+struct Vector3D: Equatable {
+    var x = 0.0, y = 0.0, z = 0.0
+}
+
+let twoThreeFour = Vector3D(x: 2.0, y: 3.0, z: 4.0)
+let anotherTwoThreeFour = Vector3D(x: 2.0, y: 3.0, z: 4.0)
+if twoThreeFour == anotherTwoThreeFour {
+    print("These two vectors are also equivalent.")
+}
+
+// Hashable
+/*
+ - 遵循 Hashable 协议且只有存储属性的结构体。
+ - 遵循 Hashable 协议且只有关联类型的枚举
+ - 没有任何关联类型的枚举
+ 在包含类型原始声明的文件中声明对Hashable协议的遵循，可以得到 hash(into:) 的合成实现，且无需自己编写任何关于 hash(into:) 的实现代码。
+ */
+
+// Comparable
+/*
+ Swift为没有原始值的枚举类型提供了Comparable协议的合成实现。
+ 如果枚举类型包含关联类型，那这些关联类型也必须同时遵循Comparable协议。
+ 在包含原始枚举类型声明的文件中声明其对Comparable协议的遵循，可以得到 < 操作符的合成实现，且无需自己编写任何关于 < 的实现代码。
+ Comparable 协议同时包含 <=、> 和 >= 操作符的默认实现。
+ */
+enum SkillLevel: Comparable {
+    case beginner
+    case intermediate
+    case expert(stars: Int)
+}
+var levels = [SkillLevel.intermediate, SkillLevel.beginner,
+              SkillLevel.expert(stars: 5), SkillLevel.expert(stars: 3)]
+for level in levels.sorted() {
+    print(level)
+}
 
 // 协议类型的集合
 /*
